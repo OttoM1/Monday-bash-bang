@@ -3,7 +3,7 @@
 # (hardcoded path, adjust when needed)
 # run 'whereis bash' in CLI to find your bash path
 
-# pipeline in this script(run everything):
+# pipeline in this script:
 # toolchain check - env - metro - platforms - workspace - quality gate - green boot - freeze snapshot and results
 set -uo pipefail
 
