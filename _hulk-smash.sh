@@ -22,8 +22,8 @@ usage: ${0##*/} [-p ios|android|web] [-c] [-s] [-y] [-k] [-b] [-g] [-n] [-S]
   -k  kill whatever holds :8081
   -b  boot an iOS simulator if none is running
   -g  typecheck + lint + tests before Metro
-  -n  stop after doctor/fix — no expo start (CI)
-  -S  strict — _zombie warnings fail the run
+  -n  stop after doctor/fix. no expo start (CI)
+  -S  strict: _zombie warnings fail the run
 env: MAX_FIXES=16, NO_COLOR=1, CI=1
 EOF
 }

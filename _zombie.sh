@@ -11,11 +11,11 @@ usage() {
   cat <<EOF
 usage: ${0##*/} [-p ios|android|web] [-k] [-b] [-g] [-S]
 
-  -p  platform (default: ios) — changes which native toolchain is required
+  -p  platform (default: ios). changes which native toolchain is required
   -k  kill whatever is holding Metro's port (8081)
   -b  boot an iOS simulator if none is running
   -g  shift-left: tsc + lint + tests before Metro
-  -S  strict — warnings fail the run (CI default)
+  -S  strict: warnings fail the run (CI default)
 env: NO_COLOR=1, METRO_PORT=8081, CI=1
 EOF
 }
@@ -120,9 +120,9 @@ if command -v node >/dev/null; then
   fi
 
   if [ -n "$sdk" ] && [ "$sdk" -ge 53 ] 2>/dev/null && [ "$node_maj" -lt 20 ]; then
-    fail "node $node_v is too old for Expo SDK $sdk (needs 20 or 22 LTS)"
+    fail "node $node_v is older than Expo SDK $sdk's tested LTS (20/22)"
   elif [ "$node_maj" -ge 24 ]; then
-    note "node $node_v is newer than Expo SDK ${sdk:-?}'s tested LTS (20/22) — this is how 'works on my machine' starts"
+    note "node $node_v has drifted past what Expo SDK ${sdk:-?} was tested on (Node 20/22 LTS)"
   elif [ "$node_maj" = 21 ] || [ "$node_maj" = 23 ]; then
     note "node $node_v is odd-numbered; Expo tests 20/22 LTS"
   else
@@ -146,7 +146,7 @@ fi
 if command -v watchman >/dev/null; then
   pass "watchman $(watchman version 2>/dev/null | sed -n 's/.*"version": "\([^"]*\)".*/\1/p' | head -1)"
 else
-  note "watchman not installed — Metro will fall back to Node watching (slow on large trees)"
+  note "watchman not installed. Metro will fall back to Node watching (slow on large trees)"
 fi
 
 if [ "$platform" = ios ] || [ "$platform" = web ]; then
@@ -175,7 +175,7 @@ fi
 # env (values are hidden):
 section "ENV CONTRACT"
 if [ ! -f .env.example ]; then
-  note "no .env.example — skipping key contract"
+  note "no .env.example: skipping key contract"
 else
   missing=0
   empty=0
@@ -200,12 +200,12 @@ else
     val=$(grep "^${key}=" .env | head -1 | cut -d= -f2-)
     val=${val%\"}; val=${val#\"}; val=${val%\'}; val=${val#\'}
     if [ -z "$val" ]; then
-      note "$key is empty — app boots, that feature is dead"
+      note "$key is empty: the related feature may not work"
       empty=$((empty + 1))
     fi
   done < .env.example
   if [ ! -f .env ]; then
-    fail ".env missing — copy .env.example and fill the keys ($checked required)"
+    fail ".env missing: copy .env.example and fill the keys ($checked required)"
   elif [ "$missing" = 0 ] && [ "$empty" = 0 ]; then
     pass "env contract  $checked keys present"
   elif [ "$missing" = 0 ]; then
@@ -227,7 +227,7 @@ if command -v lsof >/dev/null; then
       sleep 0.3
       pass "killed listeners on :$METRO_PORT:$show"
     else
-      note ":$METRO_PORT in use by$show  — rerun with -k to kill"
+      note ":$METRO_PORT in use by$show : rerun with -k to kill"
     fi
   else
     pass ":$METRO_PORT is free"
@@ -253,7 +253,7 @@ if [ "$platform" = ios ]; then
         fail "no available iPhone simulator to boot"
       fi
     else
-      note "no ios simulator booted — Expo can launch one, or pass -b"
+      note "no ios simulator booted: Expo can launch one, or pass -b"
     fi
   fi
 elif [ "$platform" = android ]; then
@@ -266,7 +266,7 @@ elif [ "$platform" = android ]; then
     fi
   fi
 else
-  pass "web — no native device required"
+  pass "web: no native device required"
 fi
 # workspace (npx expo start does not run npm prestart):
 section "WORKSPACE PACKAGES"
@@ -363,7 +363,7 @@ if [ -f "$SNAPSHOT" ]; then
   done < "$SNAPSHOT"
   [ "$drifted" = 0 ] && pass "toolchain matches last green boot"
 else
-  note "no previous snapshot — this run becomes the baseline"
+  note "no previous snapshot: this run becomes the baseline"
 fi
 cp "$current" "$CACHE_DIR/toolchain.current"
 rm -f "$current"
@@ -377,7 +377,7 @@ fi
 printf '\n%s/\/\/\/\/\/\/\ _zombie  %s pass / %s warn / %s fail  (%ss) /\/\/\/\/\/\/\%s\n' \
   "$GREEN" "$pass_n" "$warn_n" "$fail_n" "$SECONDS" "$NC"
 if [ "$fails" -gt 0 ]; then
-  printf '%s/\/\/\/\/\/\/\ not admitting Metro. fix the ✗ lines, or drop -S / -g. /\/\/\/\/\/\/\%s\n\n' "$RED" "$NC"
+  printf '%s/\/\/\/\/\/\/\ checks failed. fix the ✗ lines, or drop -S / -g. /\/\/\/\/\/\/\%s\n\n' "$RED" "$NC"
   exit 1
 fi
 # toolchain freeze:

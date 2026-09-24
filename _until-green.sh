@@ -18,7 +18,7 @@ usage: ${0##*/} [-p ios|android|web] [-c] [-s] [-y] [-n]
   -c  clear the metro cache
   -s  skip expo-doctor
   -y  non-interactive (skip the git y/n prompt)
-  -n  stop after doctor/fix — no expo start
+  -n  stop after doctor/fix. no expo start
 env: MAX_FIXES=16, NO_COLOR=1, CI=1
 EOF
 }
@@ -126,7 +126,7 @@ else
 fi
 
 if [ "$git_fail" = 1 ]; then
-  printf '\n%s%s%s\n' "$RED" "/\/\/\/\/\/\/\ git check failed — stopping before doctor/fix/expo /\/\/\/\/\/\/\ " "$NC" >&2
+  printf '\n%s%s%s\n' "$RED" "/\/\/\/\/\/\/\ git check failed! stopping before doctor/fix/expo /\/\/\/\/\/\/\ " "$NC" >&2
   exit 1
 fi
 # git check ends here
