@@ -375,7 +375,7 @@ if [ "$strict" = 1 ] && [ "$warn_n" -gt 0 ]; then
   fails=$((fails + warn_n))
 fi
 printf '\n%s/\/\/\/\/\/\/\ _zombie  %s pass / %s warn / %s fail  (%ss) /\/\/\/\/\/\/\%s\n' \
-  "$GREEN" "$pass_n" "$warn_n" "$fail_n" "$SECONDS" "$NC"
+  "$GREEN" "$pass_n" "$warn_n" "$fail_n" "$NC"
 if [ "$fails" -gt 0 ]; then
   printf '%s/\/\/\/\/\/\/\ checks failed. fix the ✗ lines, or drop -S / -g. /\/\/\/\/\/\/\%s\n\n' "$RED" "$NC"
   exit 1

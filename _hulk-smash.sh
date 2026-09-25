@@ -87,10 +87,10 @@ printf '\n%s/\/\/\/\/\/\/\ RUN EVERYTHING /\/\/\/\/\/\/\%s\n' "$GREEN" "$NC"
 printf '%splatform=%s  gate=%s  start=%s%s\n\n' "$DIM" "$platform" \
   "$([ "$run_gate" = 1 ] && echo on || echo off)" \
   "$([ "$no_start" = 1 ] && echo no || echo yes)" "$NC"
-t0=$SECONDS
+# t0=$SECONDS
 "$SCRIPT_DIR/_zombie.sh" "${pre_args[@]}"
 pre_rc=$?
-pre_dt=$((SECONDS - t0))
+# pre_dt=$((SECONDS - t0))
 if [ "$pre_rc" -ne 0 ]; then
   printf '\n%s/\/\/\/\/\/\/\ RUN ALL stopped at _zombie (%ss) /\/\/\/\/\/\/\%s\n' "$RED" "$pre_dt" "$NC"
   exit "$pre_rc"
@@ -106,10 +106,10 @@ SNAP_DIR="$ROOT/node_modules/.cache/_until-green"
 if [ -n "$ROOT" ] && [ -f "$SNAP_DIR/toolchain.current" ]; then
   mv "$SNAP_DIR/toolchain.current" "$SNAP_DIR/toolchain.snapshot"
 fi
-t1=$SECONDS
+# t1=$SECONDS
 "$SCRIPT_DIR/_until-green.sh" "${green_args[@]}"
 green_rc=$?
-green_dt=$((SECONDS - t1))
+# green_dt=$((SECONDS - t1))
 if [ "$green_rc" -ne 0 ]; then
   printf '\n%s/\/\/\/\/\/\/\ RUN ALL  _zombie %ss  _until-green FAILED %ss /\/\/\/\/\/\/\%s\n' \
     "$RED" "$pre_dt" "$green_dt" "$NC"
@@ -117,5 +117,5 @@ if [ "$green_rc" -ne 0 ]; then
 fi
 
 printf '\n%s/\/\/\/\/\/\/\ RUN ALL  _zombie %ss  _until-green %ss  total %ss /\/\/\/\/\/\/\%s\n' \
-  "$GREEN" "$pre_dt" "$green_dt" "$SECONDS" "$NC"
+  "$GREEN" "$pre_dt" "$green_dt" "$NC"
 exit 0

@@ -217,10 +217,10 @@ args=("--$platform")
 [ "$clear_cache" = 1 ] && args+=(--clear)
 rm -f "$LOG"
 if [ "$no_start" = 1 ]; then
-  say "All dependencies up to date in ${SECONDS}s. Skipping Expo start (-n)."
+  say "All dependencies up to date. Skipping Expo start (-n)."
   exit 0
 fi
-say "All dependencies up to date in ${SECONDS}s. Launching Expo $platform..."
+say "All dependencies up to date. Launching Expo $platform..."
 
 exec npx expo start "${args[@]}"
 }
